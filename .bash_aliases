@@ -53,8 +53,14 @@
   elif [[ $1 = "m" ]]; then
     shift
     python -m $@
+  elif [[ $1 = "i" ]]; then
+    shift
+    python -m pip install $@
+  elif [[ $1 = "pv" ]]; then
+    shift
+    python -m pip freeze | grep -i $1
   else
-    echo "Missing subcommand. Valid subcommands: venv, a, m"
+    echo "Missing subcommand. Valid subcommands: venv, a, m, i, pv"
     return 1
   fi
 }
