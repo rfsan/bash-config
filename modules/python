@@ -1,0 +1,46 @@
+,py__help() {
+  echo "Commands:"
+  echo "  venv <version>            Create a virtual environment"
+  echo "  a                         Activate venv"
+  echo "  d                         Deactivate venv"
+  echo "  i <package>               Install <package>"
+  echo "  iu                        List packages that can be updated"
+  echo "  iv <str>                  Show the installed versions of the packages that contain <str>"
+  echo "  v                         Show installed Python versions"
+  echo "  va                        Show Python versions that can be installed"
+  echo "  help                      Show help message"
+}
+
+,py__venv() {
+  if [[ -z $1 ]]; then
+    echo "Missing Python version"
+    return 1
+  else
+    pyenv shell $1
+    python -m venv --upgrade-deps --prompt $(basename "$PWD") .venv
+    source .venv/bin/activate
+  fi
+}
+
+,py__a()  { source .venv/bin/activate; }
+,py__d()  { deactivate; }
+,py__i()  { python -m pip install $@; }
+,py__iu() { python -m pip list -o; }
+,py__iv() { python -m pip freeze | grep -i $1; }
+,py__v()  { pyenv versions --skip-envs --skip-aliases; }
+,py__va()  { pyenv install -l | grep -G --color=never "^..3" | less +G; }
+
+
+,py() {
+  local cmdname=$1; shift
+  if [[ -z $cmdname || $cmdname == "--help" || $cmdname == "-h" ]]; then
+    ,py__help
+  elif type ",py__$cmdname" >/dev/null 2>&1; then
+    ",py__$cmdname" "$@"
+  else
+    echo "Invalid command. Use one of the following:"
+    echo
+    ,py__help
+    return 1
+  fi
+}
