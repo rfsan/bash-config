@@ -1,3 +1,7 @@
+,l() { ls -ghGAF --group-directories-first --time-style=long-iso --color=auto; }
+,exit() { echo $?; }
+,paths() { printenv PATH | tr ':' '\n'; }
+
 ,mcd() {
   : ,mcd DIRECTORY
   : Create a directory and move inside it. Nested directories are valid
@@ -21,8 +25,6 @@
   fi
 }
 
-,exit() { echo $?; }
-
 ,c() {
   : Move one or more directories up
   if [[ $# -gt 0 ]]; then
@@ -37,6 +39,7 @@
 # MODULES
 
 source $BASH_ALIASES/modules/python
+source $BASH_ALIASES/modules/git
 
 # PRIVATE
 

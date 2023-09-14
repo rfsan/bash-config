@@ -1,0 +1,20 @@
+,g__help() {
+  echo "Commands:"
+  echo "  user NAME EMAIL            Add user and email configuration to the current repository"
+}
+
+,g__user() { git config --local user.name $1 && git config --local user.email $2; }
+
+,g() {
+  local cmdname=$1; shift
+  if [[ -z $cmdname || $cmdname == "--help" || $cmdname == "-h" ]]; then
+    ,g__help
+  elif type ",g__$cmdname" >/dev/null 2>&1; then
+    ",g__$cmdname" "$@"
+  else
+    echo "Invalid command. Use one of the following:"
+    echo
+    ,g__help
+    return 1
+  fi
+}
