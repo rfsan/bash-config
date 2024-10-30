@@ -18,6 +18,8 @@
   else
     pyenv shell $1
     python -m venv --upgrade-deps --prompt $(basename "$PWD") .venv
+    touch .venv/.gitignore
+    echo '*' > .venv/.gitignore
     source .venv/bin/activate
   fi
 }

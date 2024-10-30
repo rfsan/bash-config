@@ -1,8 +1,17 @@
 ,g__help() {
   echo "Commands:"
+  echo "  config                     Custom 'git config'"
+  echo "  l                          Custom 'git log'"
+  echo "  s                          Custom 'git status'"
   echo "  user NAME EMAIL            Add user and email configuration to the current repository"
 }
 
+,g__config() { git config --list --show-scope; }
+,g__l() {
+  # https://stackoverflow.com/questions/1441010/the-shortest-possible-output-from-git-log-containing-author-and-date
+  git log --pretty="%C(Yellow)%h %C(reset)%as (%C(Green)%cr%C(reset)) %C(Cyan)%an:%C(reset)%Cgreen%d %Creset%s"; 
+}
+,g__s() { git status --short --branch; }
 ,g__user() { git config --local user.name $1 && git config --local user.email $2; }
 
 ,g() {
